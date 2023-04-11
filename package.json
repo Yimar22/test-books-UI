@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/Yimar22/test-books-UI#readme",
   "devDependencies": {
-    "cypress": "^12.9.0"
+    "cypress": "^12.9.0",
+    "typescript": "^5.0.4"
   }
 }
