@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/Yimar22/test-books-UI/issues"
   },
-  "homepage": "https://github.com/Yimar22/test-books-UI#readme"
+  "homepage": "https://github.com/Yimar22/test-books-UI#readme",
+  "devDependencies": {
+    "cypress": "^12.9.0"
+  }
 }
