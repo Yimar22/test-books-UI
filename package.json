@@ -1,0 +1,26 @@
+{
+  "name": "test-books-ui",
+  "version": "1.0.0",
+  "description": "These are the tests of the library book project with Cypress",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yimar22/test-books-UI.git"
+  },
+  "keywords": [
+    "ui-testing",
+    "dojo",
+    "practice",
+    "e",
+    "cypress"
+  ],
+  "author": "[Yimar Tamayo] <[yimar2001@gmail.com]> ([https://github.com/Yimar22])",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Yimar22/test-books-UI/issues"
+  },
+  "homepage": "https://github.com/Yimar22/test-books-UI#readme"
+}
