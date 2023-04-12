@@ -4,7 +4,8 @@
   "description": "These are the tests of the library book project with Cypress",
   "main": "index.js",
   "scripts": {
-    "test": "cypress open"
+    "test": "cypress run",
+    "test:open": "cypress open"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,8 @@
   "devDependencies": {
     "cypress": "^12.9.0",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "unique-names-generator": "^4.7.1"
   }
 }
