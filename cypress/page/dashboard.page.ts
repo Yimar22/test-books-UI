@@ -1,88 +1,108 @@
 class DashboardPage {
-  private addBookButton: string;
-  private deleteBookButton: string;
-  private editBookButton: string;
-  private booksForPageButton: string;
-  private rowsTable: string;
-  private pageButton: string;
-  private paginationSizeChanger: string;
-  private paginationSizeOption: string;
+  private botonAgregarLibro: string;
+  private botonEliminarLibro: string;
+  private botonEditarLibro: string;
+  //private botonLibrosPorPagina: string;
+  private filasTabla: string;
+  private botonPagina: string;
+  private cambiadorTamanoPaginacion: string;
+  private opcionTamanoPaginacion: string;
+  private readonly booksTableBody : string;
+  private readonly botonLibrosPorPagina : string;
+  private readonly botonMaximoLibrosPorPagina : string;
 
   constructor() {
-    this.addBookButton = '.ant-btn-primary > .ng-star-inserted:contains("Add")';
-    this.deleteBookButton =
-      // 'div[_ngcontent-uqy-c73] > .ant-btn-primary > .ng-star-inserted:contains("Delete")';
-      '.ant-btn.table-button > .ng-star-inserted:contains("Delete")';
-    this.booksForPageButton =
-      '.ant-select-selection-item.ng-star-inserted[ng-reflect-label="50 / page"]';
-    this.rowsTable = ".ant-table-tbody > .ant-table-row.ng-star-inserted";
-    this.editBookButton = "button.ant-btn-primary.ant-btn-circle";
-    this.pageButton =
-      '.ng-star-inserted > .ant-pagination-item.ng-star-inserted > .ng-star-inserted';
-    this.paginationSizeChanger =
-      '.ng-star-inserted > .ant-pagination-options.ng-star-inserted > .ant-select.ant-pagination-options-size-changer';
-    this.paginationSizeOption = 
-      '.ant-select-item > .ant-select-item-option-content';
+    this.botonAgregarLibro = '.ant-btn-primary > .ng-star-inserted';
+    this.botonEliminarLibro = '.ant-btn.table-button > .ng-star-inserted:contains("Delete")';
+   // this.botonLibrosPorPagina = '.ant-select-selection-item.ng-star-inserted[ng-reflect-label="50 / page"]';
+    this.filasTabla = ".ant-table-tbody > .ant-table-row.ng-star-inserted";
+    this.botonEditarLibro = "button.ant-btn-primary.ant-btn-circle";
+    this.botonPagina = '.ng-star-inserted > .ant-pagination-item.ng-star-inserted > .ng-star-inserted';
+    this.cambiadorTamanoPaginacion = '.ng-star-inserted > .ant-pagination-options.ng-star-inserted > .ant-select.ant-pagination-options-size-changer';
+    this.opcionTamanoPaginacion = '.ant-select-item > .ant-select-item-option-content';
+    this.booksTableBody = '.ant-spin-container';
+    this.botonLibrosPorPagina = '.ant-select-selector';
+    this.botonMaximoLibrosPorPagina = '[title="50 / page"] > .ant-select-item-option-content';
+
   }
 
-  public addBook() {
-    cy.get(this.addBookButton).click();
-  }
-  
-  public deleteButton() {
-    return cy.get(this.deleteBookButton).click();
-  }
-  
-  public getBooksForPageButton() {
-    return cy.get(this.booksForPageButton).click();
+  public agregarLibro() {
+    cy.get(this.botonAgregarLibro).click();
   }
 
-  public getRowsTable() {
-    return cy.get(this.rowsTable);
-  }
-  
-  public getBookToEditFirstButton() {
-    cy.get(this.editBookButton).eq(0).click();
+  public eliminarLibro() {
+    return cy.get(this.botonEliminarLibro).click();
   }
 
-  public verifyBookTitleAndAuthor(title: string, author: string){  
-    this.getRowsTable()
-    .get(".ant-table-cell")
-    .should("contain", title)
-    .and("contain", author);
+  public obtenerBotonLibrosPorPagina() {
+    return cy.get(this.botonLibrosPorPagina).click();
   }
 
-  public changePage(number: number) {
-    const pageToChange= this.pageButton + `:contains("${number}")`;
-    return cy.get(pageToChange).click();
+  public obtenerFilasTabla() {
+    return cy.get(this.filasTabla);
   }
 
-  public changePaginationSize(size: string) {
-    cy.get(this.paginationSizeChanger).click();
-    const newSize = this.paginationSizeOption + `:contains("${size}")`;
-    cy.get(newSize).click();
-  }
-  
-  public verifyBookInDashboard(title: string){   
-    this.getRowsTable()
-    .contains('td', title)
-    .parent()
-    .find('[type="checkbox"]')
-    .check();
-  }
-    
-  public clickEditBook(title: string){   
-    this.getRowsTable()
-    .contains('td', title)
-    .parent()
-    .find('.anticon-edit')
-    .click();
+  public obtenerPrimerBotonEditarLibro() {
+    cy.get(this.botonEditarLibro).eq(0).click();
   }
 
-  public getFirstRowTable() {
-    return cy.get(this.rowsTable)
-    .eq(0);
+  public verificarTituloAutorLibro(titulo: string, autor: string) {
+    this.obtenerFilasTabla()
+      .get(".ant-table-cell")
+      .should("contain", titulo)
+      .and("contain", autor);
   }
+
+  public cambiarPagina(numero: number) {
+    const paginaACambiar = this.botonPagina + `:contains("${numero}")`;
+    return cy.get(paginaACambiar).click();
+  }
+
+  public cambiarTamanoPaginacion(tamano: string) {
+    cy.get(this.cambiadorTamanoPaginacion).click();
+    const nuevoTamano = this.opcionTamanoPaginacion + `:contains("${tamano}")`;
+    cy.get(nuevoTamano).click();
+  }
+
+  public verificarLibroEnPanel(titulo: string) {
+    this.obtenerFilasTabla()
+      .contains('td', titulo)
+      .siblings()
+      .find("input[type='checkbox']")
+      .check();
+  }
+
+  public hacerClicEditarLibro(titulo: string) {
+    this.obtenerFilasTabla()
+      .contains('td', titulo)
+      .parent()
+      .find('.anticon-edit')
+      .click();
+  }
+
+  public obtenerPrimeraFilaTabla() {
+    return cy.get(this.filasTabla)
+      .eq(0);
+  }
+
+  public getBooksTableBody() {
+    return cy.get(this.booksTableBody);
+}
+
+public obtenerBotonMaximoLibrosPorPagina() {
+  return cy.get(this.botonMaximoLibrosPorPagina);
+}
+public checkBookButton(bookName: string) {
+  this.getBooksTableBody().contains('td', bookName).parent().find('[type="checkbox"]').check();
+}
+
+public deleteRandomBooks(randomBookList: any[]) {
+        for (let i = 0; i < randomBookList.length; i++) {
+            this.checkBookButton(randomBookList[i]['name']);
+            this.eliminarLibro().click();
+            cy.wait(1000);
+        }
+    }
 }
 
 export { DashboardPage };
