@@ -1,71 +1,43 @@
-import { uniqueNamesGenerator, Config, names } from 'unique-names-generator';
-
-type SelectorMap = {
-    [key: string]: string
-  }
-  
 class BookPage {
-    private saveBookButton: string;
-    private nameBookButton: string;
-    private authorBookButton: string;
-    private cancelBookButton: string;
+  private botonGuardarLibro: string;
+  private botonNombreLibro: string;
+  private botonAutorLibro: string;
+  private botonCancelarLibro: string;
 
-    private readonly bookNameInput: string;
-    private readonly bookAuthorInput: string;
-    private readonly saveButton: string;
+  constructor() {
+      this.botonGuardarLibro = '.ant-modal-footer > .ng-star-inserted:contains("Save")';
+      this.botonCancelarLibro = '.ant-modal-footer > .ng-star-inserted:contains("Cancel")';
+      this.botonNombreLibro = '#name';
+      this.botonAutorLibro = '#author';
+  }
 
-    constructor() {
-        this.saveBookButton ='.ant-modal-footer > .ng-star-inserted:contains("Save")';
-        this.cancelBookButton ='.ant-modal-footer > .ng-star-inserted:contains("Cancel")';
-        this.nameBookButton = '#name';
-        this.authorBookButton = '#author';
-        this.bookNameInput = '#name';
-        this.bookAuthorInput = '#author';
-        this.saveButton = '.ant-modal-footer > .ant-btn-primary';
-    }
+  public guardarLibro() {
+      return cy.get(this.botonGuardarLibro);
+  }
+  public guardarInformacionLibro(nombre: string, autor: string) {
+      cy.get(this.botonNombreLibro).type(nombre);
+      cy.wait(1000);
+      cy.get(this.botonAutorLibro).type(autor);
+  }
 
-    public saveBook() {
-        return cy.get(this.saveBookButton);
-    }
-
-    public saveInfoBook(name: string, author: string) {
-        cy.get(this.nameBookButton).type(name);
-        cy.get(this.authorBookButton).type(author);
-    }
-
-    public cancelBook() {
-        return cy.get(this.cancelBookButton).click();
-    }
-
-    public getSaveButton() {
-        return cy.get(this.saveButton);
-    }
-
-    public enterBookInformation(bookName: string, bookAuthor: string) {
-        cy.get(this.bookNameInput).click().wait(1000).type(bookName);
-        cy.get(this.bookAuthorInput).click().type(bookAuthor);
-    }
-
-    public updateBookInformation(attributes: string[], newValues: string[]) {
-        const selectors: SelectorMap = {
-          Name: this.bookNameInput,
-          Author: this.bookAuthorInput,
-        };
-        attributes.forEach((attribute, index) => {
-          cy.get(selectors[attribute]).click().clear().type(newValues[index]);
-        });
+  public actualizarInformacionLibro(nombre?: string, autor?: string) {
+      if (nombre) {
+          cy.get(this.botonNombreLibro).clear();
+          cy.get(this.botonNombreLibro).type(nombre);
       }
+      if (autor) {
+          cy.get(this.botonAutorLibro).clear();
+          cy.get(this.botonAutorLibro).type(autor);
+      }
+  }
 
-    public generateRandomBookInfo() {
-        const customConfig: Config = {
-            dictionaries: [names, names],
-            length: 2,
-            separator: ' ',
-        };
-        const bookName: string = uniqueNamesGenerator(customConfig);
-        const bookAuthor: string = uniqueNamesGenerator(customConfig);
-        return { name: bookName, author: bookAuthor };
-    }
+  public cancelarLibro() {
+      return cy.get(this.botonCancelarLibro).click();
+  }
+
+  public limpiarCampos() {
+      cy.get(this.botonNombreLibro).clear();
+      cy.get(this.botonAutorLibro).clear();
+  }
 }
-
-export { BookPage };
+export { BookPage }
