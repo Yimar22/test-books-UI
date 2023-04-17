@@ -14,17 +14,17 @@ describe("Verificando el proceso de agregar libro en el panel de la biblioteca",
     });
 
     describe("Escenarios negativos", () => {
-        it("ERROR: No se debe crear un libro con un nombre y autor de espacio vacío.", () => {
+        it("No se debe crear un libro con un nombre y autor de espacio vacío.", () => {
             bookPage.guardarInformacionLibro(" ", " ");
             bookPage.guardarLibro().should("be.disabled");
         });
 
-        it("ERROR: No se debe crear un libro con un autor de espacio vacío.", () => {
+        it("No se debe crear un libro con un autor de espacio vacío.", () => {
             bookPage.guardarInformacionLibro("La quinta Ola", " ");
             bookPage.guardarLibro().should("be.disabled");
         });
 
-        it("ERROR: No se debe crear un libro con un nombre de espacio vacío.", () => {
+        it("No se debe crear un libro con un nombre de espacio vacío.", () => {
             bookPage.guardarInformacionLibro(" ", "Rick Yancey");
             bookPage.guardarLibro().should("be.disabled");
         });
