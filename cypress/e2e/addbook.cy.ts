@@ -8,8 +8,8 @@ describe("Verificando el proceso de agregar libro en el panel de la biblioteca",
         cy.visit("http://localhost:4200/dashboard");
         dashboard = new DashboardPage();
         bookPage = new BookPage();
-        dashboard.obtenerBotonLibrosPorPagina().click();
-        dashboard.obtenerBotonMaximoLibrosPorPagina().click();
+        dashboard.obtenerBotonLibrosPorPagina().click({ force: true });
+        dashboard.obtenerBotonMaximoLibrosPorPagina().click({ force: true });
         dashboard.agregarLibro();
     });
 
@@ -20,45 +20,45 @@ describe("Verificando el proceso de agregar libro en el panel de la biblioteca",
         });
 
         it("ERROR: No se debe crear un libro con un autor de espacio vacío.", () => {
-            bookPage.guardarInformacionLibro("El mapa de los anhelos", " ");
+            bookPage.guardarInformacionLibro("La quinta Ola", " ");
             bookPage.guardarLibro().should("be.disabled");
         });
 
         it("ERROR: No se debe crear un libro con un nombre de espacio vacío.", () => {
-            bookPage.guardarInformacionLibro(" ", "Alice Kellen");
+            bookPage.guardarInformacionLibro(" ", "Rick Yancey");
             bookPage.guardarLibro().should("be.disabled");
         });
     });
 
     describe("Escenarios positivos", () => {
-        it("should add a book with one author to the Dashboard", () => {
+        it("Se debería agregar un libro con un autor", () => {
             //Actions
-            bookPage.guardarInformacionLibro("Moby-Dick", "Herman Melville");
-            bookPage.guardarLibro().should('be.enabled').click();
+            bookPage.guardarInformacionLibro("La quinta Ola", "Rick Yancey");
+            bookPage.guardarLibro().should('be.enabled').click({ force: true });
             cy.wait(1000);
 
             // Assertions
             dashboard.getBooksTableBody()
-                .should("include.text", "Moby-Dick")
-                .and("include.text", "Herman Melville");
+                .should("include.text", "La quinta Ola")
+                .and("include.text", "Rick Yancey");
         });
 
-        it("should add a book with more than one author delimited by ', ' to the Dashboard", () => {
+        it("Se debería agregar un libro con más de un autor delimitado por ', ' ", () => {
             //Actions
-            bookPage.guardarInformacionLibro("Hamlet", "Herman Melville, William Shakespeare");
-            bookPage.guardarLibro().should('be.enabled').click();
+            bookPage.guardarInformacionLibro("La Guerra de los Mundos", "H.G. Wells, Steven Spielberg");
+            bookPage.guardarLibro().should('be.enabled').click({ force: true });
             cy.wait(1000);
 
             // Assertions
             dashboard.getBooksTableBody()
-                .should("include.text", "Hamlet")
-                .and("include.text", "Herman Melville, William Shakespeare");
+                .should("include.text", "La Guerra de los Mundos")
+                .and("include.text", "H.G. Wells, Steven Spielbergs");
         });
 
         after(() => {
             dashboard.deleteRandomBooks([
-                { name: "Moby-Dick", author: "Herman Melville" },
-                { name: "Hamlet", author: "Herman Melville, William Shakespeare" },
+                { name: "La quinta Ola", author: "Rick Yancey" },
+                { name: "La Guerra de los Mundos", author: "H.G. Wells, Steven Spielberg" },
             ]
             );
         });
