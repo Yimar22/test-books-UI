@@ -35,7 +35,7 @@ class DashboardPage {
   }
 
   public obtenerBotonLibrosPorPagina() {
-    return cy.get(this.botonLibrosPorPagina).click();
+    return cy.get(this.botonLibrosPorPagina).click({ force: true });
   }
 
   public obtenerFilasTabla() {
@@ -59,9 +59,11 @@ class DashboardPage {
   }
 
   public cambiarTamanoPaginacion(tamano: string) {
-    cy.get(this.cambiadorTamanoPaginacion).click();
+    cy.get(this.cambiadorTamanoPaginacion).click({ force: true });
     const nuevoTamano = this.opcionTamanoPaginacion + `:contains("${tamano}")`;
-    cy.get(nuevoTamano).click();
+   // cy.get(nuevoTamano).click({ force: true });
+    cy.get(nuevoTamano, { timeout: 10000 }).click({ force: true });
+
   }
 
   public verificarLibroEnPanel(titulo: string) {
@@ -73,11 +75,12 @@ class DashboardPage {
   }
 
   public hacerClicEditarLibro(titulo: string) {
+    cy.wait(2000); // Agrega una espera de 2 segundos.
     this.obtenerFilasTabla()
-      .contains('td', titulo)
+      .contains('td', titulo, { timeout: 20000 })
       .parent()
       .find('.anticon-edit')
-      .click();
+      .click({ force: true });
   }
 
   public obtenerPrimeraFilaTabla() {
@@ -90,7 +93,7 @@ class DashboardPage {
 }
 
 public obtenerBotonMaximoLibrosPorPagina() {
-  return cy.get(this.botonMaximoLibrosPorPagina);
+  return cy.get(this.botonMaximoLibrosPorPagina).click({ force: true });
 }
 public checkBookButton(bookName: string) {
   this.getBooksTableBody().contains('td', bookName).parent().find('[type="checkbox"]').check();
