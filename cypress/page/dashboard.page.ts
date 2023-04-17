@@ -3,6 +3,7 @@ class DashboardPage {
   private botonEliminarLibro: string;
   private botonEditarLibro: string;
   //private botonLibrosPorPagina: string;
+  private botonSeleccionarTodosLosLibros : string;
   private filasTabla: string;
   private botonPagina: string;
   private cambiadorTamanoPaginacion: string;
@@ -14,6 +15,7 @@ class DashboardPage {
   constructor() {
     this.botonAgregarLibro = '.ant-btn-primary > .ng-star-inserted';
     this.botonEliminarLibro = '.ant-btn.table-button > .ng-star-inserted:contains("Delete")';
+    this.botonSeleccionarTodosLosLibros = '.ant-table-selection > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input';
    // this.botonLibrosPorPagina = '.ant-select-selection-item.ng-star-inserted[ng-reflect-label="50 / page"]';
     this.filasTabla = ".ant-table-tbody > .ant-table-row.ng-star-inserted";
     this.botonEditarLibro = "button.ant-btn-primary.ant-btn-circle";
@@ -27,7 +29,9 @@ class DashboardPage {
   }
 
   public agregarLibro() {
-    cy.get(this.botonAgregarLibro).click();
+    cy.wait(1000); // Agrega una espera de 1 segundo.
+
+    cy.get(this.botonAgregarLibro).first().click({ force: true });
   }
 
   public eliminarLibro() {
@@ -67,11 +71,12 @@ class DashboardPage {
   }
 
   public verificarLibroEnPanel(titulo: string) {
+    cy.wait(2000); // Espera 2 segundos
     this.obtenerFilasTabla()
-      .contains('td', titulo)
-      .siblings()
-      .find("input[type='checkbox']")
-      .check();
+    .contains('td', titulo)
+    .parent()
+    .find('[type="checkbox"]')
+    .check();
   }
 
   public hacerClicEditarLibro(titulo: string) {
@@ -95,13 +100,15 @@ class DashboardPage {
 public obtenerBotonMaximoLibrosPorPagina() {
   return cy.get(this.botonMaximoLibrosPorPagina).click({ force: true });
 }
-public checkBookButton(bookName: string) {
-  this.getBooksTableBody().contains('td', bookName).parent().find('[type="checkbox"]').check();
+
+public eliminarTodosLosLibros() {
+  cy.get(this.botonSeleccionarTodosLosLibros).click();
+  this.eliminarLibro().click();
 }
 
 public deleteRandomBooks(randomBookList: any[]) {
         for (let i = 0; i < randomBookList.length; i++) {
-            this.checkBookButton(randomBookList[i]['name']);
+            this.verificarLibroEnPanel(randomBookList[i]['name']);
             this.eliminarLibro().click();
             cy.wait(1000);
         }
